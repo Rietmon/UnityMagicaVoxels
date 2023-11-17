@@ -38,14 +38,6 @@ namespace UnityMagicaVoxels.Runtimes.Files
         {
             var model = Models[index];
             var size = new int3(model.Size.x, model.Size.y, model.Size.z);
-            var builder = new StringBuilder();
-            for (var i = 0; i < model.Voxels.Length; i++)
-            {
-                var color = (Color)Palette.GetColor(model.Voxels[i].ColorIndex);
-                if (color != Color.white)
-                    builder.Append($"{color} ");
-            }
-            Debug.Log(builder.ToString());
             var dataWithPosition = new NativeArray<VoxelDataWithPosition>(model.Voxels.Length, Allocator.Temp);
             for (var j = 0; j < model.Voxels.Length; j++)
             {

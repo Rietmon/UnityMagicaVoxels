@@ -13,29 +13,27 @@ namespace UnityMagicaVoxels.Runtimes.Converters
             var meshDataArray = Mesh.AllocateWritableMeshData(1);
             var meshData = meshDataArray[0];
 
-            var job = new MagicaVoxelMeshGeneratorJob
-            {
-                size = data.Size,
-                voxels = data.Voxels,
-                voxelSize = settings.VoxelSize,
-                upDirection = settings.UpDirection switch
+            var job = new MagicaVoxelMeshGeneratorJob(data.Size, 
+                data.Voxels, 
+                settings.VoxelSize,
+                settings.UpDirection switch
                 {
-                    MagicaVoxelMeshGeneratorSettings.Direction.X => new float3(1, 0, 0),
-                    MagicaVoxelMeshGeneratorSettings.Direction.Y => new float3(0, 1, 0),
-                    MagicaVoxelMeshGeneratorSettings.Direction.Z => new float3(0, 0, 1),
+                    MagicaVoxelMeshGeneratorSettings.Direction.X => 0,
+                    MagicaVoxelMeshGeneratorSettings.Direction.Y => 1,
+                    MagicaVoxelMeshGeneratorSettings.Direction.Z => 2,
                     _ => throw new System.NotImplementedException()
-                }
-            };
+                });
             job.Execute();
             data.Dispose();
 
             meshData.SetVertexBufferParams(job.vertices.Length,
                 new VertexAttributeDescriptor(VertexAttribute.Position),
+                new VertexAttributeDescriptor(VertexAttribute.Normal),
                 new VertexAttributeDescriptor(VertexAttribute.Color, VertexAttributeFormat.Float32, 4));
             meshData.SetIndexBufferParams(job.indices.Length, IndexFormat.UInt32);
 
             var meshDataVertices = meshData.GetVertexData<float>();
-            meshDataVertices.CopyFrom(job.verticesPlusColors);
+            meshDataVertices.CopyFrom(job.verticesBuffer);
 
             var meshDataIndices = meshData.GetIndexData<uint>();
             meshDataIndices.CopyFrom(job.indices.AsArray());
