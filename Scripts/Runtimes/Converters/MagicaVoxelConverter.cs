@@ -40,12 +40,13 @@ namespace UnityMagicaVoxels.Runtimes.Converters
             var meshDataArray = Mesh.AllocateWritableMeshData(1);
             var meshData = meshDataArray[0];
 
-            FillMeshData(meshData, data, settings);
+            meshData.FillMeshDataFromWithVoxels(data, settings);
             Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, mesh);
             mesh.RecalculateBounds();
         }
 
-        private static void FillMeshData(Mesh.MeshData meshData, VoxelGroupData data, MagicaVoxelMeshGeneratorSettings settings)
+        public static void FillMeshDataFromWithVoxels(this Mesh.MeshData meshData, VoxelGroupData data, 
+            MagicaVoxelMeshGeneratorSettings settings)
         {
             var job = new MagicaVoxelMeshGeneratorJob(data.Size, 
                 data.Voxels, 
