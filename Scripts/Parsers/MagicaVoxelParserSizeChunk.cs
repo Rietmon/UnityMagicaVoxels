@@ -14,7 +14,7 @@ namespace UnityMagicaVoxels.Parsers
             var z = reader.ReadInt32();
             var y = reader.ReadInt32();
             
-#if MAGICA_VOXELS_Z_UP
+#if !MAGICA_VOXELS_Y_UP
             Size = new Vector3Int(x, y, z);
 #else
             Size = new Vector3Int(x, z, y);

@@ -18,7 +18,7 @@ namespace UnityMagicaVoxels.Runtimes.Assets.Editor
             var assetName = Path.GetFileName(assetPath);
             asset.name = assetName;
             asset.MagicaVoxelFile = MagicaVoxelParser.Parse(assetPath);
-            var mesh = asset.MagicaVoxelFile.ConvertToMesh(0, new MagicaVoxelMeshGeneratorSettings
+            var mesh = asset.MagicaVoxelFile.GenerateSingleMesh(0, new MagicaVoxelMeshGeneratorSettings
             {
                 VoxelSize = VoxelSize
             });

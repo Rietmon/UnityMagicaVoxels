@@ -1,10 +1,7 @@
-#define DEBUG_MAGICA_VOXELS
-using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
-using UnityEngine;
 using UnityMagicaVoxels.Runtimes.Types;
 
 namespace UnityMagicaVoxels.Runtimes.Converters

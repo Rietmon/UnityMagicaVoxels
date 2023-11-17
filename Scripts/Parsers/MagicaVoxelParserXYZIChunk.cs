@@ -19,7 +19,7 @@ namespace UnityMagicaVoxels.Parsers
                 var z = reader.ReadByte();
                 var y = reader.ReadByte();
 
-#if MAGICA_VOXELS_Z_UP
+#if !MAGICA_VOXELS_Y_UP
                 Voxels[i] = new MagicaVoxelParserXYZIVoxelData(
                     x, y, z, reader.ReadByte());
 #else
