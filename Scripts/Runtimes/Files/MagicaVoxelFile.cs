@@ -1,11 +1,9 @@
 using System;
-using System.Text;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityMagicaVoxels.Runtimes.Types;
-using Random = UnityEngine.Random;
 
 namespace UnityMagicaVoxels.Runtimes.Files
 {
@@ -60,6 +58,7 @@ namespace UnityMagicaVoxels.Runtimes.Files
             {
                 var voxel = source[i];
                 var index = voxel.Position.x * size.y * size.z + voxel.Position.y * size.z + voxel.Position.z;
+                
                 result[index] = new VoxelData(voxel.Color);
             }
 

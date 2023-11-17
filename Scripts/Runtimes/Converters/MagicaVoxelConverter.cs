@@ -15,14 +15,7 @@ namespace UnityMagicaVoxels.Runtimes.Converters
 
             var job = new MagicaVoxelMeshGeneratorJob(data.Size, 
                 data.Voxels, 
-                settings.VoxelSize,
-                settings.UpDirection switch
-                {
-                    MagicaVoxelMeshGeneratorSettings.Direction.X => 0,
-                    MagicaVoxelMeshGeneratorSettings.Direction.Y => 1,
-                    MagicaVoxelMeshGeneratorSettings.Direction.Z => 2,
-                    _ => throw new System.NotImplementedException()
-                });
+                settings.VoxelSize);
             job.Execute();
             data.Dispose();
 

@@ -10,8 +10,6 @@ namespace UnityMagicaVoxels.Runtimes.Assets.Editor
     [ScriptedImporter(1, "vox")]
     public class MagicaVoxelAssetImporter : ScriptedImporter
     {
-        [field: SerializeField] public MagicaVoxelMeshGeneratorSettings.Direction UpDirection { get; set; } =
-            MagicaVoxelMeshGeneratorSettings.Direction.Z;
         [field: SerializeField] public float VoxelSize { get; set; } = 0.1f;
         
         public override void OnImportAsset(AssetImportContext ctx)
@@ -22,7 +20,6 @@ namespace UnityMagicaVoxels.Runtimes.Assets.Editor
             asset.MagicaVoxelFile = MagicaVoxelParser.Parse(assetPath);
             var mesh = asset.MagicaVoxelFile.ConvertToMesh(0, new MagicaVoxelMeshGeneratorSettings
             {
-                UpDirection = UpDirection,
                 VoxelSize = VoxelSize
             });
             mesh.RecalculateBounds();

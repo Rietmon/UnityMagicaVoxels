@@ -4,6 +4,7 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using UnityEngine;
 using UnityMagicaVoxels.Runtimes.Types;
 
 namespace UnityMagicaVoxels.Runtimes.Converters
@@ -24,15 +25,13 @@ namespace UnityMagicaVoxels.Runtimes.Converters
         private readonly int3 size;
         private readonly NativeArray<VoxelData> voxels;
         private readonly float voxelSize;
-        private readonly int upDirection;
 
-        public MagicaVoxelMeshGeneratorJob(int3 size, NativeArray<VoxelData> voxels, float voxelSize, int upDirection)
+        public MagicaVoxelMeshGeneratorJob(int3 size, NativeArray<VoxelData> voxels, float voxelSize)
         {
             this = default;
             this.size = size;
             this.voxels = voxels;
             this.voxelSize = voxelSize;
-            this.upDirection = upDirection;
         }
 
         public void Execute()
@@ -47,16 +46,12 @@ namespace UnityMagicaVoxels.Runtimes.Converters
                 {
                     for (var z = 0; z < size.z; z++)
                     {
-                        var voxel = voxels[x * size.y * size.z + y * size.z + z];
+                        var voxelIndex = x * size.y * size.z + y * size.z + z;
+                        var voxel = voxels[voxelIndex];
                         if (IsEmptyVoxel(voxel))
                             continue;
 
-                        switch (upDirection)
-                        {
-                            case 0: AddCube(new int3(y, x, z), voxel.Color); break;
-                            case 1: AddCube(new int3(x, y, z), voxel.Color); break;
-                            case 2: AddCube(new int3(x, z, y), voxel.Color); break;
-                        }
+                        AddCube(new int3(x, y, z), voxel.Color);
                     }
                 }
             }
@@ -229,13 +224,6 @@ namespace UnityMagicaVoxels.Runtimes.Converters
 
         private bool IsEmptyPosition(int3 position)
         {
-            position = upDirection switch
-            {
-                0 => position.yxz,
-                1 => position.xyz,
-                2 => position.xzy,
-                _ => throw new ArgumentOutOfRangeException()
-            };
             if (position.x < 0 || position.x >= size.x
                                || position.y < 0 || position.y >= size.y
                                || position.z < 0 || position.z >= size.z)

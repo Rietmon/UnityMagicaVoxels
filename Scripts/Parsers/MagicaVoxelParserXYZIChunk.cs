@@ -15,8 +15,17 @@ namespace UnityMagicaVoxels.Parsers
             Voxels = new MagicaVoxelParserXYZIVoxelData[VoxelsCount];
             for (var i = 0; i < VoxelsCount; i++)
             {
+                var x = reader.ReadByte();
+                var z = reader.ReadByte();
+                var y = reader.ReadByte();
+
+#if MAGICA_VOXELS_Z_UP
                 Voxels[i] = new MagicaVoxelParserXYZIVoxelData(
-                    reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                    x, y, z, reader.ReadByte());
+#else
+                Voxels[i] = new MagicaVoxelParserXYZIVoxelData(
+                    x, z, y, reader.ReadByte());
+#endif
             }
         }
     }
